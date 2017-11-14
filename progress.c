@@ -107,8 +107,9 @@ static int display(struct progress *progress, uint64_t n, const char *done)
 			progress->last_percent = percent;
 			if (is_foreground_fd(fileno(stderr)) || done) {
 				fprintf(stderr, "%s: %3u%% (%"PRIuMAX"/%"PRIuMAX")%s%s",
-					progress->title, percent, n,
-					progress->total, tp, eol);
+					progress->title, percent,
+					(uintmax_t)n, (uintmax_t)progress->total,
+					tp, eol);
 				fflush(stderr);
 			}
 			progress_update = 0;
@@ -117,7 +118,7 @@ static int display(struct progress *progress, uint64_t n, const char *done)
 	} else if (progress_update) {
 		if (is_foreground_fd(fileno(stderr)) || done) {
 			fprintf(stderr, "%s: %"PRIuMAX"%s%s",
-				progress->title, n, tp, eol);
+				progress->title, (uintmax_t)n, tp, eol);
 			fflush(stderr);
 		}
 		progress_update = 0;
